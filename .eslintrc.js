@@ -11,6 +11,8 @@ module.exports = {
       'error',
       { devDependencies: ['test-utils/**/*', '**/*.jest.js'] },
     ],
+    'import/no-dynamic-require': 'off',
+    'global-require': 'off',
   },
   globals: {
     document: true,
