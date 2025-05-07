@@ -1,5 +1,5 @@
 {
-  "name": "@rspack/csp-plugin",
+  "name": "@rspack/plugin-csp",
   "version": "6.0.4",
   "description": "A plugin which, when combined with HtmlRspackPlugin, adds CSP tags to the HTML output",
   "main": "plugin.js",
