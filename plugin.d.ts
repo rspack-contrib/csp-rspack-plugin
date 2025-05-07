@@ -105,6 +105,11 @@ declare namespace CspHtmlWebpackPlugin {
          * include nonces.
          */
         nonceEnabled?: { [directive: string]: boolean } | undefined;
+
+        /**
+         * The path of HtmlPlugin, default is `HtmlRspackPlugin` which means using rspack.HtmlRspackPlugin.
+         */
+        htmlPlugin?: string | undefined;
     }
 }
 

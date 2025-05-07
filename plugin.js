@@ -5,24 +5,7 @@ const compact = require('lodash/compact');
 const flatten = require('lodash/flatten');
 const isFunction = require('lodash/isFunction');
 const get = require('lodash/get');
-const webpack = require('webpack');
-const { SubresourceIntegrityPlugin } = require('webpack-subresource-integrity');
 const InjectPlugin = require('webpack-inject-plugin').default;
-
-/* eslint-disable no-useless-escape */
-
-// Attempt to load HtmlWebpackPlugin@4
-// Borrowed from https://github.com/waysact/webpack-subresource-integrity/blob/master/index.js
-let HtmlWebpackPlugin;
-try {
-  // eslint-disable-next-line global-require
-  HtmlWebpackPlugin = require('html-webpack-plugin');
-} catch (e) {
-  /* istanbul ignore next */
-  if (!(e instanceof Error) || e.code !== 'MODULE_NOT_FOUND') {
-    throw e;
-  }
-}
 
 /**
  * The default function for adding the CSP to the head of a document
@@ -59,6 +42,7 @@ const defaultPolicy = {
 };
 
 const defaultAdditionalOpts = {
+  htmlPlugin: 'HtmlRspackPlugin',
   enabled: true,
   integrityEnabled: true,
   primeReactEnabled: true,
@@ -322,7 +306,7 @@ class CspHtmlWebpackPlugin {
    * @param htmlPluginData
    * @param compileCb
    */
-  processCsp(compilation, htmlPluginData, compileCb) {
+  async processCsp(compilation, htmlPluginData, compileCb) {
     const $ = cheerio.load(htmlPluginData.html, {
       decodeEntities: false,
       _useHtmlParser2: true,
@@ -372,12 +356,21 @@ class CspHtmlWebpackPlugin {
    * @param compiler
    */
   apply(compiler) {
+    const { DefinePlugin, experiments, HtmlRspackPlugin } = compiler.webpack;
+    const { SubresourceIntegrityPlugin } = experiments;
+    const HtmlPlugin =
+      this.opts.htmlPlugin === 'HtmlRspackPlugin'
+        ? HtmlRspackPlugin
+        : require(this.opts.htmlPlugin);
+
     compiler.hooks.compilation.tap('CspHtmlWebpackPlugin', (compilation) => {
-      HtmlWebpackPlugin.getHooks(compilation).beforeAssetTagGeneration.tapAsync(
+      HtmlPlugin.getCompilationHooks(
+        compilation
+      ).beforeAssetTagGeneration.tapAsync(
         'CspHtmlWebpackPlugin',
         this.mergeOptions.bind(this, compilation)
       );
-      HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tapAsync(
+      HtmlPlugin.getCompilationHooks(compilation).beforeEmit.tapAsync(
         'CspHtmlWebpackPlugin',
         this.processCsp.bind(this, compilation)
       );
@@ -389,12 +382,14 @@ class CspHtmlWebpackPlugin {
       definitions['process.env.REACT_APP_CSS_NONCE'] = JSON.stringify(
         this.primeReactInlineNonce
       );
-      new webpack.DefinePlugin(definitions).apply(compiler);
+      new DefinePlugin(definitions).apply(compiler);
     }
 
     // add SHA384 integrity attributes to JS and CSS files
     if (this.opts.enabled && this.opts.integrityEnabled) {
-      new SubresourceIntegrityPlugin().apply(compiler);
+      new SubresourceIntegrityPlugin({
+        htmlPlugin: this.opts.htmlPlugin,
+      }).apply(compiler);
     }
 
     // add default TrustedTypes policy which uses DOMPurify to sanitize HTML
@@ -404,7 +399,7 @@ class CspHtmlWebpackPlugin {
       this.cspPluginPolicy['require-trusted-types-for']
     ) {
       const purifyScript = `import DOMPurify from 'dompurify';
-function sanitizeUrl(r){if(!r)return"about:blank";var t=r.replace(/[\u0000-\u001F\u007F-\u009F\u2000-\u200D\uFEFF]/gim,"").trim();if([".","/"].indexOf(t[0])>-1)return t;var a=t.match(/^([^:]+):/gm);if(!a)return t;var u=a[0];return/^([^\w]*)(javascript|data|vbscript)/im.test(u)?"about:blank":t};
+function sanitizeUrl(r){if(!r)return"about:blank";var t=r.replace(/[\u0000-\u001F\u007F-\u009F\u2000-\u200D\uFEFF]/gim,"").trim();if([".","/"].indexOf(t[0])>-1)return t;var a=t.match(/^([^:]+):/gm);if(!a)return t;var u=a[0];return/^([^\\w]*)(javascript|data|vbscript)/im.test(u)?"about:blank":t};
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
     window.trustedTypes.createPolicy('default', {
         createHTML: (string) => DOMPurify.sanitize(string, {RETURN_TRUSTED_TYPE: true}),

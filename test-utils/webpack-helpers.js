@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require('webpack');
+const webpack = require('@rspack/core');
 const MemoryFs = require('memory-fs');
 const cheerio = require('cheerio');
 
@@ -62,8 +62,8 @@ function webpackCompile(
       csps,
       htmlFilesCheerio,
       fileSystem,
-      stats.compilation.errors,
-      stats.compilation.warnings
+      stats.compilation.errors.map((error) => error.message),
+      stats.compilation.warnings.map((warning) => warning.message)
     );
   });
 }

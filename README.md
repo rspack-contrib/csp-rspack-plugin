@@ -1,4 +1,7 @@
-# CSP Webpack Plugin
+# CSP Rspack Plugin
+
+> [!NOTE]  
+> This is a fork of [csp-webpack-plugin](https://github.com/melloware/csp-webpack-plugin), and will be used in Rspack to fix bugs and add some Rspack customized features.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/@melloware%2Fcsp-webpack-plugin.svg)](https://badge.fury.io/js/@melloware%2Fcsp-webpack-plugin)

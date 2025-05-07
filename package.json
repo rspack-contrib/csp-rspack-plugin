@@ -1,25 +1,26 @@
 {
-  "name": "@melloware/csp-webpack-plugin",
+  "name": "csp-rspack-plugin",
   "version": "6.0.4",
-  "description": "A plugin which, when combined with HTMLWebpackPlugin, adds CSP tags to the HTML output",
+  "description": "A plugin which, when combined with HtmlRspackPlugin, adds CSP tags to the HTML output",
   "main": "plugin.js",
   "types": "plugin.d.ts",
   "scripts": {
     "eslint": "eslint .",
     "eslint:fix": "eslint . --fix",
-    "jest": "jest --config=./jest.config.js plugin.jest.js",
-    "jest:watch": "jest --watch --verbose=false --config=./jest.config.js plugin.jest.js",
-    "jest:coverage:generate": "jest --coverage --config=./jest.config.js plugin.jest.js",
+    "jest": "jest --config=./jest.config.js",
+    "jest:watch": "jest --watch --verbose=false --config=./jest.config.js",
+    "jest:coverage:generate": "jest --coverage --config=./jest.config.js",
     "jest:coverage:clean": "rimraf  ./coverage",
     "jest:coverage:upload": "npx codecov",
     "jest:coverage": "npm run jest:coverage:clean && npm run jest:coverage:generate && npm run jest:coverage:upload",
-    "test": "npm run eslint && npm run jest && npm run jest:coverage"
+    "test": "npm run eslint && npm run jest",
+    "test:coverage": "npm run test && npm run jest:coverage"
   },
-  "homepage": "https://github.com/melloware/csp-webpack-plugin",
-  "bugs": "https://github.com/melloware/csp-webpack-plugin/issues",
+  "homepage": "https://github.com/rspack-contrib/csp-rspack-plugin",
+  "bugs": "https://github.com/rspack-contrib/csp-rspack-plugin/issues",
   "repository": {
     "type": "git",
-    "url": "git@github.com:melloware/csp-webpack-plugin.git"
+    "url": "git@github.com:rspack-contrib/csp-rspack-plugin.git"
   },
   "keywords": [
     "webpack",
@@ -36,14 +37,18 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.5",
-    "lodash": "^4.17.20",
-    "webpack-inject-plugin": "^1.5.5",
-    "webpack-subresource-integrity": "^5.0.0"
+    "cheerio": "^1.0.0",
+    "lodash": "^4.17.21",
+    "webpack-inject-plugin": "^1.5.5"
   },
   "peerDependencies": {
-    "html-webpack-plugin": "^4 || ^5",
-    "webpack": "^4 || ^5"
+    "@rspack/core": "^1.3.8",
+    "html-webpack-plugin": "^4 || ^5"
+  },
+  "peerDependenciesMeta": {
+    "html-webpack-plugin": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "babel-jest": "^29.0.1",
@@ -60,7 +65,12 @@
     "mini-css-extract-plugin": "^2.4.5",
     "prettier": "^2.2.1",
     "rimraf": "^5.0.5",
-    "webpack": "^5.10.1",
-    "webpack-sources": "^3.2.2"
+    "@rspack/core": "1.3.8"
+  },
+  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
+  "pnpm": {
+    "overrides": {
+      "@rspack/core": "npm:@rspack-canary/core@1.3.9-canary-972c005f-20250507063649"
+    }
   }
 }
