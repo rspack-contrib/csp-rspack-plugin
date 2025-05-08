@@ -14,7 +14,8 @@
     "jest:coverage:upload": "npx codecov",
     "jest:coverage": "npm run jest:coverage:clean && npm run jest:coverage:generate && npm run jest:coverage:upload",
     "test": "npm run eslint && npm run jest",
-    "test:coverage": "npm run test && npm run jest:coverage"
+    "test:coverage": "npm run test && npm run jest:coverage",
+    "release": "node ./scripts/release.mjs"
   },
   "homepage": "https://github.com/rspack-contrib/csp-rspack-plugin",
   "bugs": "https://github.com/rspack-contrib/csp-rspack-plugin/issues",
@@ -51,6 +52,7 @@
     }
   },
   "devDependencies": {
+    "@continuous-auth/client": "2.3.2",
     "babel-jest": "^29.0.1",
     "codecov": "^3.8.1",
     "css-loader": "^6.5.1",
