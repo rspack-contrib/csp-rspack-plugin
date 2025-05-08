@@ -4,8 +4,8 @@
 > This is a fork of [csp-webpack-plugin](https://github.com/melloware/csp-webpack-plugin), and will be used in Rspack to fix bugs and add some Rspack customized features.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/@rspack%2Fplugin-csp.svg)](https://badge.fury.io/js/@rspack%2Fplugin-csp)
-![NPM Downloads](https://img.shields.io/npm/dm/@rspack%2Fplugin-csp?color=purple)
+[![npm version](https://badge.fury.io/js/csp-rspack-plugin.svg)](https://badge.fury.io/js/csp-rspack-plugin)
+![NPM Downloads](https://img.shields.io/npm/dm/csp-rspack-plugin?color=purple)
 [![Build Status](https://github.com/rspack-contrib/csp-rspack-plugin/actions/workflows/test.yml/badge.svg)](https://github.com/rspack-contrib/csp-rspack-plugin/actions/workflows/test.yml)
 
 ## About
@@ -32,7 +32,7 @@ All inline JS and CSS will be hashed and inserted into the policy.
 Install the plugin with npm:
 
 ```shell
-$ npm i --save-dev @rspack/plugin-csp
+$ npm i --save-dev csp-rspack-plugin
 ```
 
 ## Basic Usage
@@ -41,7 +41,7 @@ Include the following in your rspack config:
 
 ```javascript
 const { HtmlRspackPlugin } = require('@rspack/core');
-const CspHtmlRspackPlugin = require('@rspack/plugin-csp');
+const CspHtmlRspackPlugin = require('csp-rspack-plugin');
 
 module.exports = {
   // rest of rspack config
@@ -58,7 +58,7 @@ or you can use `html-webpack-plugin` instead:
 
 ```javascript
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CspHtmlRspackPlugin = require('@rspack/plugin-csp');
+const CspHtmlRspackPlugin = require('csp-rspack-plugin');
 
 module.exports = {
   // rest of webpack config
@@ -76,7 +76,7 @@ module.exports = {
 
 ## Recommended Configuration
 
-By default, the `@rspack/plugin-csp` has a very lax policy. You should configure it for your needs.
+By default, the `csp-rspack-plugin` has a very lax policy. You should configure it for your needs.
 
 A good starting policy would be the following:
 
